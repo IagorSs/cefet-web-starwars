@@ -6,6 +6,7 @@
 import { play } from './music.js';
 import { convert } from './roman.js';
 import { restartAnimation } from './restart-animation.js';
+import { friendlyFetch } from './friendly-fetch.js';
 
 const API_ENDPOINT = 'https://swapi.dev/api'
 
@@ -46,6 +47,5 @@ const handlerResponse = (response) => {
     });
 };
 
-fetch(`${API_ENDPOINT}/films`)
-    .then(res => res.json())
+friendlyFetch(`${API_ENDPOINT}/films`)
     .then(handlerResponse);
