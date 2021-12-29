@@ -5,6 +5,7 @@
 //  - Quando um filme for clicado, exibir sua introdução
 import { play } from './music.js';
 import { convert } from './roman.js';
+import { restartAnimation } from './restart-animation.js';
 
 const API_ENDPOINT = 'https://swapi.dev/api'
 
@@ -17,6 +18,8 @@ play({
 
 const filmsList = document.querySelector("#filmes ul");
 
+const filmContent = document.querySelector('pre.introducao');
+
 const handlerResponse = (response) => {
     filmsList.innerHTML = "";
 
@@ -27,10 +30,17 @@ const handlerResponse = (response) => {
     });
 
     orderedResponse.forEach(film => {
-        const { episode_id, title } = film;
+        const { episode_id, title, opening_crawl } = film;
+
+        const romanEp = convert(episode_id);
 
         const itemFilm = document.createElement('li');
-        itemFilm.innerText = `Episode ${convert(episode_id)} - ${title}`
+        itemFilm.innerText = `Episode ${romanEp} - ${title}`;
+
+        itemFilm.addEventListener('click', () => {
+            filmContent.innerText = `Episode ${romanEp}\n${title.toUpperCase()}\n\n${opening_crawl}`;
+            restartAnimation(filmContent);
+        });
 
         filmsList.appendChild(itemFilm);
     });
